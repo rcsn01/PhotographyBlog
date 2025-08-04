@@ -4,8 +4,15 @@ import path from 'path';
 import matter from 'gray-matter';
 import markdownToHtml from '../utils/markdownToHtml';
 import Post from '../components/Post';
+interface PostPageProps {
+  frontmatter: {
+    title: string;
+    [key: string]: any;
+  };
+  content: string;
+}
 
-const PostPage = ({ frontmatter, content }) => {
+const PostPage: React.FC<PostPageProps> = ({ frontmatter, content }) => {
   return (
     <div className="main-container">
       <Post title={frontmatter.title} content={content} />
@@ -29,7 +36,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const markdownWithMeta = fs.readFileSync(path.join('posts', params.slug + '.md'), 'utf-8');
+  if (!params || typeof params.slug !== 'string') {
+    return { notFound: true };
+  }
+
+  const markdownWithMeta = fs.readFileSync(
+    path.join('posts', params.slug + '.md'),
+    'utf-8'
+  );
   const { data: frontmatter, content } = matter(markdownWithMeta);
   const htmlContent = await markdownToHtml(content || '');
 

@@ -31,19 +31,20 @@ const Home: React.FC<Props> = ({ posts }) => {
 export const getStaticProps: GetStaticProps = async () => {
   const postsDirectory = path.join(process.cwd(), 'posts');
   const filenames = fs.readdirSync(postsDirectory);
-  
-  const posts = filenames.map((filename) => {
-    const filePath = path.join(postsDirectory, filename);
-    const fileContents = fs.readFileSync(filePath, 'utf8');
-    const { data, content } = matter(fileContents);
-    
-    return {
-      slug: filename.replace(/\.md$/, ''),
-      title: data.title,
-      content,
-      //content: data.content,
-    };
-  });
+
+  const posts = filenames
+    .filter((filename) => filename.endsWith('.md')) // Only .md files
+    .map((filename) => {
+      const filePath = path.join(postsDirectory, filename);
+      const fileContents = fs.readFileSync(filePath, 'utf8');
+      const { data, content } = matter(fileContents);
+
+      return {
+        slug: filename.replace(/\.md$/, ''),
+        title: data.title,
+        content,
+      };
+    });
 
   return {
     props: {
