@@ -33,7 +33,10 @@ export const getStaticProps: GetStaticProps = async () => {
   const filenames = fs.readdirSync(postsDirectory);
 
   const posts = filenames
-    .filter((filename) => filename.endsWith('.md')) // Only .md files
+    .filter((filename) => {
+      const filePath = path.join(postsDirectory, filename);
+      return fs.statSync(filePath).isFile() && filename.endsWith('.md');
+    })
     .map((filename) => {
       const filePath = path.join(postsDirectory, filename);
       const fileContents = fs.readFileSync(filePath, 'utf8');
