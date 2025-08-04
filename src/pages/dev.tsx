@@ -29,6 +29,14 @@ export default function DevPage({ posts }: Props) {
             imageHeight="300px"
             imageWidth="100%"
             showMobileWarning={false}
+            showTooltip={false}
+            displayOverlayContent={true}
+            overlayContent={
+              <p className="tilted-card-demo-text">
+                Kendrick Lamar - GNX
+              </p>
+            }
+            //overlayContent={<p className="tilted-card-demo-text">{post.title}</p>}
           />
         ))}
       </div>

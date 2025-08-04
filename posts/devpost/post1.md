@@ -1,8 +1,6 @@
 ---
-title: "PorfolioBlog"
+title: "First"
 date: "2025-08-03"
 description: "My first blog post using Markdown and Next.js!"
-image : /images/sample-image.jpg
+image : /images/DSCF3002.jpg
 ---
-
-

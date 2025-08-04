@@ -1,28 +1,29 @@
-import { useRef, useState, ReactNode } from "react";
+import type { SpringOptions } from "framer-motion";
+import { useRef, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
-import "./TiltedCard.css";
-
-const springValues = {
-  damping: 30,
-  stiffness: 100,
-  mass: 2,
-};
+import "./TiltedCard.module.css";
 
 interface TiltedCardProps {
-  imageSrc: string;
+  imageSrc: React.ComponentProps<"img">["src"];
   altText?: string;
   captionText?: string;
-  containerHeight?: string;
-  containerWidth?: string;
-  imageHeight?: string;
-  imageWidth?: string;
+  containerHeight?: React.CSSProperties['height'];
+  containerWidth?: React.CSSProperties['width'];
+  imageHeight?: React.CSSProperties['height'];
+  imageWidth?: React.CSSProperties['width'];
   scaleOnHover?: number;
   rotateAmplitude?: number;
   showMobileWarning?: boolean;
   showTooltip?: boolean;
-  overlayContent?: ReactNode;
+  overlayContent?: React.ReactNode;
   displayOverlayContent?: boolean;
 }
+
+const springValues: SpringOptions = {
+  damping: 30,
+  stiffness: 100,
+  mass: 2,
+};
 
 export default function TiltedCard({
   imageSrc,
@@ -39,7 +40,7 @@ export default function TiltedCard({
   overlayContent = null,
   displayOverlayContent = false,
 }: TiltedCardProps) {
-  const ref = useRef<HTMLDivElement | null>(null);
+  const ref = useRef<HTMLElement>(null);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -53,9 +54,9 @@ export default function TiltedCard({
     mass: 1,
   });
 
-  const [lastY, setLastY] = useState(0);
+  const [lastY, setLastY] = useState<number>(0);
 
-  function handleMouse(e: React.MouseEvent) {
+  function handleMouse(e: React.MouseEvent<HTMLElement>) {
     if (!ref.current) return;
 
     const rect = ref.current.getBoundingClientRect();
@@ -128,7 +129,9 @@ export default function TiltedCard({
         />
 
         {displayOverlayContent && overlayContent && (
-          <motion.div className="tilted-card-overlay">
+          <motion.div
+            className="tilted-card-overlay"
+          >
             {overlayContent}
           </motion.div>
         )}
