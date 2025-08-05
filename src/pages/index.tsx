@@ -3,7 +3,6 @@ import Link from 'next/link';
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import Post from '../components/Post';
 
 interface Post {
   slug: string;
@@ -20,9 +19,6 @@ const Home: React.FC<Props> = ({ posts }) => {
     <div className="main-container">
       <h1 style={{ fontSize: '2.5rem', marginBottom: '2rem', textAlign: 'center' }}>My Next.js Blog</h1>
       <div style={{ width: '100%', maxWidth: 700 }}>
-        {posts.map((post) => (
-          <Post key={post.slug} title={post.title} content={post.content} />
-        ))}
       </div>
     </div>
   );

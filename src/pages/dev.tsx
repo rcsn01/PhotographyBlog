@@ -17,11 +17,11 @@ export default function DevPage({ posts }: Props) {
   return (
     <div className="main-container">
       <h1>Dev Blog</h1>
-      <div style={{ width: '100%', maxWidth: 700 }}>
+      <div className="cards-container">
         {posts.map((post) => (
           <TiltedCard
             key={post.slug}
-            imageSrc={post.image ?? '/placeholder.jpg'} // fallback image if missing
+            imageSrc={post.image ?? '/placeholder.jpg'}
             altText={post.title}
             captionText={post.description ?? ''}
             containerHeight="300px"
@@ -36,7 +36,6 @@ export default function DevPage({ posts }: Props) {
                 Kendrick Lamar - GNX
               </p>
             }
-            //overlayContent={<p className="tilted-card-demo-text">{post.title}</p>}
           />
         ))}
       </div>

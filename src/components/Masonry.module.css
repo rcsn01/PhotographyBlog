@@ -1,0 +1,27 @@
+.list {
+  position: relative;
+  width: 100%;
+  height: auto;
+  /* Add gap between columns */
+  column-gap: 20px;
+}
+
+.item-wrapper {
+  position: absolute;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 8px;
+  /* Add margin around each item */
+  margin: 10px;
+  /* Adjust width calculation to account for margins */
+  box-sizing: border-box;
+}
+
+.item-img {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}

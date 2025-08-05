@@ -56,6 +56,8 @@ $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";"
 4. Run the development server:
    ```
    npm run dev
+   npm run build
+   npm start
    ```
 
 5. Open your browser and go to `http://localhost:3000` to see the blog in action.

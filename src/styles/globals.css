@@ -83,3 +83,23 @@ img {
 .menu-bar li a:hover {
   color: #818181;
 }
+
+.cards-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto; /* CENTER the grid container */
+  padding: 0 1rem; /* Give consistent left/right padding */
+  box-sizing: border-box;
+}
+
+
+@media (min-width: 768px) {
+  .cards-container {
+    grid-template-columns: 1fr 1fr; /* 2 columns on medium+ screens */
+    max-width: 1000px;
+  }
+}
+
