@@ -10,6 +10,9 @@ import { gsap } from "gsap";
 // Ensure you're importing CSS correctly (note: .module.css should be imported with a name)
 import styles from "./Masonry.module.css";
 
+import NextImage from "next/image";
+
+
 const useMedia = (
   queries: string[],
   values: number[],
@@ -105,19 +108,19 @@ const Masonry: React.FC<MasonryProps> = ({
   blurToFocus = true,
   colorShiftOnHover = false,
 }) => {
-  const columns = useMedia(
+    const columns = useMedia(
     [
-      "(min-width:1500px)",
-      "(min-width:1000px)",
-      "(min-width:600px)",
-      "(min-width:400px)",
+        "(min-width: 1600px)",  // Extra large screens
+        "(min-width: 1200px)",  // Large desktop
+        "(min-width: 900px)",   // Tablet landscape
+        "(min-width: 600px)"    // Tablet portrait
     ],
-    [5, 4, 3, 2],
-    1
-  );
+    [5, 4, 3, 2],  // More columns at each breakpoint
+    1              // Single column on mobile
+    );
 
   const [containerRef, { width }] = useMeasure<HTMLDivElement>();
-  const [imagesReady, setImagesReady] = useState(false);
+  //const [imagesReady, setImagesReady] = useState(false);
 
   const getInitialPosition = (item: GridItem) => {
     const containerRect = containerRef.current?.getBoundingClientRect();
@@ -151,16 +154,18 @@ const Masonry: React.FC<MasonryProps> = ({
     }
   };
 
+  /*
   useEffect(() => {
     if (items.length > 0) {
       preloadImages(items.map((i) => i.img)).then(() => setImagesReady(true));
     }
   }, [items]);
+  */
 
     const grid = useMemo<GridItem[]>(() => {
     if (!width) return [];
 
-    const gapSize = 20; // Match this with your CSS gap
+    const gapSize = 10; // Match this with your CSS gap
     const colHeights = new Array(columns).fill(0);
     const columnWidth = (width - (columns - 1) * gapSize) / columns;
 
@@ -179,7 +184,8 @@ const Masonry: React.FC<MasonryProps> = ({
   const hasMounted = useRef(false);
 
   useLayoutEffect(() => {
-    if (!imagesReady || !containerRef.current) return;
+    //if (!imagesReady || !containerRef.current) return;
+    if (!containerRef.current) return;
 
     grid.forEach((item, index) => {
       const element = containerRef.current?.querySelector(`[data-key="${item.id}"]`);
@@ -208,8 +214,8 @@ const Masonry: React.FC<MasonryProps> = ({
           opacity: 1,
           ...animationProps,
           ...(blurToFocus && { filter: "blur(0px)" }),
-          duration: 0.8,
-          ease: "power3.out",
+          duration: duration,  // Using prop
+          ease: ease,         // Using prop
           delay: index * stagger,
         });
       } else {
@@ -223,7 +229,7 @@ const Masonry: React.FC<MasonryProps> = ({
     });
 
     hasMounted.current = true;
-  }, [grid, imagesReady, stagger, animateFrom, blurToFocus, duration, ease, containerRef]);
+  }, [grid, stagger, animateFrom, blurToFocus, duration, ease, containerRef]);
 
   const handleMouseEnter = (e: React.MouseEvent, item: GridItem) => {
     const element = e.currentTarget as HTMLElement;
@@ -232,7 +238,7 @@ const Masonry: React.FC<MasonryProps> = ({
       gsap.to(element, {
         scale: hoverScale,
         duration: 0.3,
-        ease: "power2.out",
+        ease: "linear",
       });
     }
 
@@ -254,7 +260,7 @@ const Masonry: React.FC<MasonryProps> = ({
       gsap.to(element, {
         scale: 1,
         duration: 0.3,
-        ease: "power2.out",
+        ease: "linear",
       });
     }
 
@@ -279,11 +285,11 @@ const Masonry: React.FC<MasonryProps> = ({
       className={styles.list}
       style={{
         position: "relative",
-        width: "100%",
+        width: "95%",
         minHeight: "100vh",
       }}
     >
-      {grid.map((item) => (
+      {grid.map((item, index) => (
         <div
           key={item.id}
           data-key={item.id}
@@ -291,8 +297,9 @@ const Masonry: React.FC<MasonryProps> = ({
           style={{
             position: "absolute",
             overflow: "hidden",
-            borderRadius: "8px",
+            //borderRadius: "0px",
             cursor: "pointer",
+            willChange: "transform", // Add this
           }}
           onClick={() => window.open(item.url, "_blank", "noopener")}
           onMouseEnter={(e) => handleMouseEnter(e, item)}
@@ -303,16 +310,56 @@ const Masonry: React.FC<MasonryProps> = ({
             style={{
               width: "100%",
               height: "100%",
-              backgroundImage: `url(${item.img})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
+              position: "relative",
             }}
           >
+            <NextImage
+              src={item.img}
+              alt=""
+              fill
+              sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              style={{
+                objectFit: "cover",
+                borderRadius: "0px",
+                margin: "0 auto",
+              }}
+              placeholder="empty"
+              loading="lazy"
+              // 💡 Pass stagger delay via closure
+              onLoadingComplete={() => {
+                const element = document.querySelector(`[data-key="${item.id}"]`);
+                if (!element) return;
+
+                const initialPos = getInitialPosition(item);
+
+                gsap.set(element, {
+                  position: "absolute",
+                  opacity: 0,
+                  x: initialPos.x,
+                  y: initialPos.y,
+                  width: item.w,
+                  height: item.h,
+                  ...(blurToFocus && { filter: "blur(10px)" }),
+                });
+
+                gsap.to(element, {
+                  opacity: 1,
+                  x: item.x,
+                  y: item.y,
+                  width: item.w,
+                  height: item.h,
+                  ...(blurToFocus && { filter: "blur(0px)" }),
+                  duration,
+                  ease,
+                  delay: index * stagger, // 🎯 Add stagger here
+                });
+              }}
+            />
             {colorShiftOnHover && (
               <div
                 className="color-overlay"
                 style={{
-                  position: "absolute",
+                  //position: "absolute",
                   top: 0,
                   left: 0,
                   width: "100%",
@@ -320,13 +367,13 @@ const Masonry: React.FC<MasonryProps> = ({
                   background: "linear-gradient(45deg, rgba(255,0,150,0.5), rgba(0,150,255,0.5))",
                   opacity: 0,
                   pointerEvents: "none",
-                  borderRadius: "8px",
                 }}
               />
             )}
           </div>
         </div>
       ))}
+
     </div>
   );
 };

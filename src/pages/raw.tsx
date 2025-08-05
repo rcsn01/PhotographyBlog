@@ -15,12 +15,13 @@ interface Props {
 }
 
 export default function RawPage({ posts }: Props) {
-  const masonryItems = posts.map((post, index) => ({
+  const limitedPosts = posts.slice(0, 40);
+  const masonryItems = limitedPosts.map((post, index) => ({
     id: post.slug,
     img: post.image ?? 'https://picsum.photos/600/800?grayscale&random=' + index,
     url: `/rawpost/${post.slug}`,
-    //height: post.height || 300,
-    height: Math.floor(Math.random() * (500 - 200 + 1)) + 200, // Random between 200-500
+    height: post.height * 600,
+    //height: Math.floor(Math.random() * (1500 - 500 + 1)) + 500, // Random between 200-500
     post,
   }));
 
@@ -30,12 +31,12 @@ export default function RawPage({ posts }: Props) {
       <h1>Raw Blog</h1>
       <Masonry
         items={masonryItems}
-        ease="power3.out"
-        duration={0.6}
+        ease="easeIn"
+        duration={0.3}
         stagger={0.05}
-        animateFrom="bottom"
+        animateFrom="left"
         scaleOnHover={true}
-        hoverScale={0.97}
+        hoverScale={1.02}
         blurToFocus={true}
         colorShiftOnHover={false}
       />
@@ -43,15 +44,16 @@ export default function RawPage({ posts }: Props) {
   );
 }
 
-/*
+
 export const getStaticProps: GetStaticProps = async () => {
   const posts = getPostsFromFolder('rawpost');
   return { props: { posts } };
 };
-*/
 
+/*
 export const getStaticProps: GetStaticProps = async () => {
   const posts = getPostsFromFolder('rawpost');
   console.log('Loaded posts:', posts);
   return { props: { posts } };
 };
+*/

@@ -64,6 +64,12 @@ $env:PATH = [System.Environment]::GetEnvironmentVariable("PATH","Machine") + ";"
 
 ## Creating a New Post
 
+To auto generate new post, run
+```
+node generatePosts.js
+npm run generate-posts
+```
+
 To create a new post, add a Markdown file in the `posts` directory. The filename will be used as the slug for the post URL.
 
 ## License

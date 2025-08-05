@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const sharp = require('sharp');
 
 // Configuration
 const IMAGE_DIR = path.join(__dirname, 'public', 'images', 'raw');
@@ -11,7 +12,7 @@ if (!fs.existsSync(POSTS_DIR)) {
 }
 
 // Get all image files
-fs.readdir(IMAGE_DIR, (err, files) => {
+fs.readdir(IMAGE_DIR, async (err, files) => {
   if (err) {
     console.error('Error reading image directory:', err);
     return;
@@ -25,26 +26,32 @@ fs.readdir(IMAGE_DIR, (err, files) => {
   let filesCreated = 0;
   let filesSkipped = 0;
 
-  // Generate a markdown file for each image
-  imageFiles.forEach(file => {
+  // Process images sequentially to avoid too many files open at once
+  for (const file of imageFiles) {
     const postName = path.basename(file, path.extname(file));
     const mdFilename = `${postName}.md`;
     const mdFilePath = path.join(POSTS_DIR, mdFilename);
+    const imagePath = path.join(IMAGE_DIR, file);
     
     // Skip if file already exists
     if (fs.existsSync(mdFilePath)) {
       console.log(`Skipped (exists): ${mdFilename}`);
       filesSkipped++;
-      return;
+      continue;
     }
 
-    // Generate content with proper title formatting
-    const prettyTitle = postName
-      .replace(/([A-Z])/g, ' $1')
-      .replace(/(\d+)/g, ' $1')
-      .trim();
-      
-    const mdContent = `---
+    try {
+      // Get image dimensions
+      const metadata = await sharp(imagePath).metadata();
+      const aspectRatio = metadata.height / metadata.width;
+
+      // Generate content with proper title formatting
+      const prettyTitle = postName
+        .replace(/([A-Z])/g, ' $1')
+        .replace(/(\d+)/g, ' $1')
+        .trim();
+        
+      const mdContent = `---
 title: "${prettyTitle}"
 date: "${new Date().toISOString().split('T')[0]}"
 description: "A beautiful photograph"
@@ -53,24 +60,17 @@ captionText: "Scenic view"
 tags:
   - photography
   - nature
-height: ${Math.floor(Math.random() * 300) + 200}
+height: ${aspectRatio}
 ---
 `;
 
-    fs.writeFile(
-      mdFilePath,
-      mdContent,
-      { flag: 'wx' }, // Prevent overwriting
-      err => {
-        if (err) {
-          console.error(`Error writing ${mdFilename}:`, err);
-        } else {
-          console.log(`Created: ${mdFilename}`);
-          filesCreated++;
-        }
-      }
-    );
-  });
+      fs.writeFileSync(mdFilePath, mdContent, { flag: 'wx' });
+      console.log(`Created: ${mdFilename}`);
+      filesCreated++;
+    } catch (err) {
+      console.error(`Error processing ${file}:`, err);
+    }
+  }
 
   console.log(`
     Process complete!

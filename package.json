@@ -4,7 +4,7 @@
   "description": "A simple blog built with Next.js and Markdown posts",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 192.168.1.159",
     "build": "next build",
     "start": "next start",
     "generate-posts": "node generatePosts.js"
@@ -15,11 +15,14 @@
     "grey-matter": "^0.0.0",
     "gsap": "^3.13.0",
     "next": "latest",
+    "ogl": "^1.0.11",
     "react": "latest",
     "react-dom": "latest",
+    "react-icons": "^5.5.0",
     "react-markdown": "^10.1.0",
     "remark": "latest",
-    "remark-html": "latest"
+    "remark-html": "latest",
+    "sharp": "^0.34.3"
   },
   "devDependencies": {
     "@types/node": "latest",
@@ -27,7 +30,5 @@
     "@types/react-dom": "^19.1.7",
     "typescript": "latest"
   },
-  
   "license": "MIT"
-  
 }

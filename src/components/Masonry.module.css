@@ -1,27 +1,35 @@
+/* Masonry.module.css */
 .list {
   position: relative;
-  width: 100%;
-  height: auto;
-  /* Add gap between columns */
-  column-gap: 20px;
+  width: 95%;
+  min-height: 100vh;
+  margin: 0 auto;
 }
 
-.item-wrapper {
+.itemWrapper {
   position: absolute;
-  cursor: pointer;
   overflow: hidden;
-  border-radius: 8px;
-  /* Add margin around each item */
-  margin: 10px;
-  /* Adjust width calculation to account for margins */
-  box-sizing: border-box;
+  border-radius: 0 !important;
+  cursor: pointer;
+  will-change: transform; /* Optimize for animations */
 }
 
-.item-img {
+
+.itemImg {
   width: 100%;
   height: 100%;
-  background-size: cover;
-  background-position: center;
+  position: relative;
+}
+
+/* For color-shift overlay */
+.colorOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(255,0,150,0.5), rgba(0,150,255,0.5));
+  opacity: 0;
+  pointer-events: none;
   border-radius: 8px;
-  transition: transform 0.3s ease;
 }

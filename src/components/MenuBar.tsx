@@ -1,20 +1,21 @@
 import React from 'react';
 import Link from 'next/link';
+import styles from './MenuBar.module.css';
 
 const menuItems = [
-  { label: 'Ivan', href: '/' },
-  { label: 'Dev', href: '/dev' },
-  { label: 'Raw', href: '/raw' },
-  // Remove or fix the info link:
-  // { label: 'info', href: '#' },
+  { label: 'Home', href: '/' },
+  { label: 'Project', href: '/dev' },
+  { label: 'Gallery', href: '/raw' },
 ];
 
 const MenuBar: React.FC = () => (
-  <nav className="menu-bar">
-    <ul>
+  <nav className={styles.menuBar}>
+    <ul className={styles.menuList}>
       {menuItems.map((item) => (
-        <li key={item.label}>
-          <Link href={item.href}>{item.label}</Link>
+        <li key={item.label} className={styles.menuItem}>
+          <Link href={item.href} className={styles.menuLink}>
+            {item.label}
+          </Link>
         </li>
       ))}
     </ul>
