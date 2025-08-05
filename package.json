@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "generate-posts": "node generatePosts.js"
   },
   "dependencies": {
     "framer-motion": "^12.23.12",
@@ -26,5 +27,7 @@
     "@types/react-dom": "^19.1.7",
     "typescript": "latest"
   },
+  
   "license": "MIT"
+  
 }

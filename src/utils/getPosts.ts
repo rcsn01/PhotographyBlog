@@ -19,6 +19,7 @@ export function getPostsFromFolder(folder: string) {
       title: data.title || '',
       description: data.description || '',
       image: data.image || '', // <-- add this line
+      height: data.height || 300, // Default height if not specified
     };
   });
 

@@ -7,6 +7,7 @@ interface Post {
   title: string;
   description?: string;
   image?: string;
+  height: number;
 }
 
 interface Props {
@@ -18,7 +19,8 @@ export default function RawPage({ posts }: Props) {
     id: post.slug,
     img: post.image ?? 'https://picsum.photos/600/800?grayscale&random=' + index,
     url: `/rawpost/${post.slug}`,
-    height: 300 + (index % 3) * 100, // Simulated varied heights
+    //height: post.height || 300,
+    height: Math.floor(Math.random() * (500 - 200 + 1)) + 200, // Random between 200-500
     post,
   }));
 
@@ -38,23 +40,6 @@ export default function RawPage({ posts }: Props) {
         colorShiftOnHover={false}
       />
     </div>
-    
-    /*
-    <div className="main-container">
-      <h1>Raw Blog</h1>
-      {posts.length === 0 ? (
-        <p>No posts found.</p>
-      ) : (
-        <ul>
-          {posts.map((post) => (
-            <li key={post.slug}>
-              <a href={`/rawpost/${post.slug}`}>{post.title}</a>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-    */
   );
 }
 

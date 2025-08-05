@@ -157,23 +157,24 @@ const Masonry: React.FC<MasonryProps> = ({
     }
   }, [items]);
 
-  const grid = useMemo<GridItem[]>(() => {
-    if (!width || !columns) return [];
+    const grid = useMemo<GridItem[]>(() => {
+    if (!width) return [];
 
+    const gapSize = 20; // Match this with your CSS gap
     const colHeights = new Array(columns).fill(0);
-    const columnWidth = width / columns;
+    const columnWidth = (width - (columns - 1) * gapSize) / columns;
 
     return items.map((child) => {
-      const col = colHeights.indexOf(Math.min(...colHeights));
-      const x = columnWidth * col;
-      const height = child.height / 2;
-      const y = colHeights[col];
+        const col = colHeights.indexOf(Math.min(...colHeights));
+        const x = columnWidth * col + gapSize * col; // Add gap offset
+        const height = child.height / 2;
+        const y = colHeights[col];
 
-      colHeights[col] += height;
+        colHeights[col] += height + gapSize; // Add gap to height calculation
 
-      return { ...child, x, y, w: columnWidth, h: height };
+        return { ...child, x, y, w: columnWidth, h: height };
     });
-  }, [columns, items, width]);
+    }, [columns, items, width]);
 
   const hasMounted = useRef(false);
 
