@@ -1,17 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import TrueFocus from '../components/TrueFocus';
 import RotatingText from '../components/RotatingText';
 import Iridescence from '../components/Iridescence';
 import { FaLinkedin, FaEnvelope, FaGithub } from 'react-icons/fa';
 
 const Home: React.FC = () => {
+  const router = useRouter();
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight;
+      const winHeight = window.innerHeight;
+      const scrollPercent = (scrollTop / (docHeight - winHeight)) * 100;
+
+      if (scrollPercent > 90 && !isTransitioning) {
+        setIsTransitioning(true);
+        document.body.classList.add('page-exit');
+        setTimeout(() => {
+          router.push('/dev');
+        }, 700);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [router, isTransitioning]);
+
   return (
     <div
       className="main-container"
       style={{
         position: 'relative',
-        top: '50%',
-        left: '0%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -20,11 +42,11 @@ const Home: React.FC = () => {
         overflow: 'hidden',
       }}
     >
-      {/* 👇 "ivan yu" background text */}
+      {/* Background text */}
       <div
         style={{
           position: 'absolute',
-          top: '47%',
+          top: '37%',
           left: '25%',
           transform: 'translate(-50%, -50%)',
           fontSize: '1.7rem',
@@ -38,36 +60,44 @@ const Home: React.FC = () => {
         Hi, I'm Ivan
       </div>
 
-      {/* 👇 Foreground content */}
-      <div
-        style={{
-          display: 'flex',
-          gap: '0.5rem',
-          alignItems: 'center',
-          zIndex: 1,
-        }}
-      >
-        <RotatingText
-          texts={['Full Stack', 'Front End', 'Back End', 'Data']}
-          animationType="slide"
-          duration={0.6}
-          delayBetween={2}
-        />
-        <span>Engineer</span>
+      {/* Foreground content */}
+      <div style={{ marginTop: '17rem', textAlign: 'center' }}>
+        {/* Foreground content */}
+        <div
+          style={{
+            display: 'flex',
+            gap: '0.5rem',
+            alignItems: 'center',
+            zIndex: 1,
+            justifyContent: 'center',
+          }}
+        >
+          <RotatingText
+            texts={['Full Stack', 'Front End', 'Back End', 'Data']}
+            animationType="slide"
+            duration={0.6}
+            delayBetween={2}
+          />
+          <span>Engineer</span>
+        </div>
+
+        <div style={{ zIndex: 1, marginTop: '5rem' }}>
+          <TrueFocus
+            sentence="P h o t o g r a p h e r"
+            manualMode={false}
+            blurAmount={1.2}
+            borderColor="blue"
+            animationDuration={0.1}
+            pauseBetweenAnimations={0.02}
+          />
+        </div>
       </div>
 
-      <div style={{ zIndex: 1 }}>
-        <TrueFocus
-          sentence="P h o t o g r a p h e r"
-          manualMode={false}
-          blurAmount={1.2}
-          borderColor="blue"
-          animationDuration={0.1}
-          pauseBetweenAnimations={0.02}
-        />
-      </div>
 
-      {/* 👇 Right-side floating social buttons */}
+      {/* Extra section for scroll */}
+      <div style={{ height: '50vh' }}></div>
+
+      {/* Social buttons */}
       <div
         style={{
           position: 'fixed',
@@ -88,10 +118,7 @@ const Home: React.FC = () => {
         >
           <FaLinkedin size={24} />
         </a>
-        <a
-          href="mailto:your@email.com"
-          style={buttonStyle}
-        >
+        <a href="mailto:your@email.com" style={buttonStyle}>
           <FaEnvelope size={24} />
         </a>
         <a
@@ -107,7 +134,7 @@ const Home: React.FC = () => {
   );
 };
 
-// 🎨 Button styles
+// Button styles
 const buttonStyle: React.CSSProperties = {
   backgroundColor: 'white',
   border: '1px solid #ccc',
