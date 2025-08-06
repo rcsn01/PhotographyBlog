@@ -1,9 +1,12 @@
 {
+  "homepage": "https://rcsn01/github.io/PhotographyBlog",
   "name": "my-nextjs-blog",
   "version": "1.0.0",
   "description": "A simple blog built with Next.js and Markdown posts",
   "main": "index.js",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "dev": "next dev -H 192.168.1.159",
     "build": "next build",
     "start": "next start",
@@ -28,6 +31,7 @@
     "@types/node": "latest",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
+    "gh-pages": "^6.3.0",
     "typescript": "latest"
   },
   "license": "MIT"
