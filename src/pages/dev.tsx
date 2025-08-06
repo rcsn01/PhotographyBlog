@@ -1,6 +1,5 @@
 import { GetStaticProps } from 'next';
 import { getPostsFromFolder } from '../utils/getPosts';
-import TiltedCard from '../components/TiltedCard';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
@@ -14,7 +13,6 @@ interface Post {
   images?: string[];
   content?: string;
 }
-
 
 interface Props {
   posts: Post[];
@@ -46,25 +44,77 @@ export default function DevPage({ posts }: Props) {
   }, [router, isTransitioning]);
 
   return (
-    <div className="main-container">
-      <h1>Dev Blog</h1>
-      <div className="cards-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
+    <div className="blog" style={{ padding: '2rem' }}>
+      {/* ✅ Experiences Section */}
+      <section style={{ marginBottom: '3rem' }}>
+        <h1 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '1rem' }}>Experiences</h1>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '0.5fr 1fr 1fr', // ✅ 3 columns
+            gap: '0.5rem 1rem',
+            fontSize: '1rem',
+            lineHeight: '1.8',
+          }}
+        >
+          {/* Row 1 */}
+          <div style={{ fontStyle: 'italic' }}>05 25' - 08 25'</div>
+          <div>365 Roadside Assistant</div>
+          <div><strong>Data Engineer & Back End Developer</strong></div>
+
+          {/* Row 2 */}
+          <div style={{ fontStyle: 'italic' }}>05 25' - 08 25'</div>
+          <div>Optik Engineering Consultancy</div>
+          <div><strong>Consultant</strong></div>
+
+          {/* Row 3 */}
+          <div style={{ fontStyle: 'italic' }}>02 25' - 06 25'</div>
+          <div>SpeedX</div>
+          <div><strong>Full Stack Software Developer</strong></div>
+        </div>
+      </section>
+
+      {/* ✅ Skills Section */}
+      <section style={{ marginBottom: '3rem' }}>
+        <h2 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '1rem' }}>Skills</h2>
+        <div style={{ lineHeight: '1.8' }}>
+          <p><strong>Programming Languages:</strong> Python (with expertise in data analytics libraries), Java, C, C#, SQL</p>
+          <p><strong>Frameworks & Libraries:</strong> TensorFlow, ASP.NET, ASP.NET Core, ASP.NET Web API, ASP.NET Razor, MVC (Model-View-Controller)</p>
+          <p><strong>Cloud & DevOps:</strong> Amazon Web Services (AWS), AWS Lambda</p>
+          <p><strong>Tools & Platforms:</strong> GitHub, Swagger API, Jupyter, Visual Studio, VS Code</p>
+          <p><strong>Databases:</strong> PostgreSQL, SQL</p>
+          <p><strong>Data & AI Skills:</strong> Data Analysis, Data Processing, Data Visualization, Machine Learning, Computer Vision, Cybersecurity</p>
+          <p><strong>Project & Development Methodologies:</strong> Agile Methodologies, Project Management, Client Expectations Management</p>
+          <p><strong>Languages:</strong> English, Chinese (Mandarin)</p>
+        </div>
+      </section>
+
+      {/* ✅ Projects Section */}
+      {/*<h2 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '1rem' }}>Projects</h2>*/}
+      <div
+        className="cards-container"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', // ✅ Increased min width
+          marginTop: '5rem',
+          gap: '2.5rem', // Slightly larger gap
+        }}
+      >
         {posts.map((post) => (
           <ImageCard key={post.slug} post={post} onClick={() => router.push(`/dev/${post.slug}`)} />
         ))}
       </div>
+
       <div style={{ height: '100vh' }}></div>
     </div>
-    
   );
 }
 
-// ImageCard component with slideshow
+// ✅ ImageCard remains unchanged
 const ImageCard: React.FC<{ post: Post; onClick: () => void }> = ({ post, onClick }) => {
   const { title, images } = post;
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Cycle through images every 3 seconds
   useEffect(() => {
     if (!images || images.length <= 1) return;
 
@@ -80,7 +130,7 @@ const ImageCard: React.FC<{ post: Post; onClick: () => void }> = ({ post, onClic
       onClick={onClick}
       style={{
         position: 'relative',
-        borderRadius: '12px',
+        borderRadius: '5px',
         overflow: 'hidden',
         cursor: 'pointer',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
@@ -104,12 +154,17 @@ const ImageCard: React.FC<{ post: Post; onClick: () => void }> = ({ post, onClic
         style={{
           position: 'absolute',
           bottom: 0,
+          left: 0,
           width: '100%',
-          background: 'rgba(0, 0, 0, 0.5)',
+          height: '50%',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.3), rgba(0,0,0,0))',
+          display: 'flex',
+          alignItems: 'flex-end',
+          padding: '1rem',
           color: 'white',
-          textAlign: 'center',
-          padding: '0.5rem',
           fontSize: '1rem',
+          fontWeight: 500,
+          boxSizing: 'border-box',
         }}
       >
         {title}

@@ -26,9 +26,39 @@ export default function RawPage({ posts }: Props) {
   }));
 
   return (
-    
-    <div className="main-container">
-      <h1>Raw Blog</h1>
+    <div className="blog" style={{ padding: '2rem' }}>
+      {/* ✅ Experiences Section */}
+      <section style={{ marginBottom: '3rem' }}>
+        <h1 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '1rem' }}>Fujifilm XT-30</h1>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '0.1fr 0.15fr 0.15fr 0.5fr', // ✅ 3 columns
+            gap: '0.5rem 1rem',
+            fontSize: '1rem',
+            lineHeight: '1.8',
+          }}
+        >
+          {/* Row 1 */}
+          <div style={{ fontStyle: 'italic' }}>FujiFilm XF</div>
+          <div>18-55mm 2.8:4</div>
+          <div>R LM OIS Ø58</div>
+          <div></div>
+
+          {/* Row 2 */}
+          <div style={{ fontStyle: 'italic' }}>Sigma</div>
+          <div>16mm 1:1.4</div>
+          <div>DC DN Ø67</div>
+          <div></div>
+
+          {/* Row 3 */}
+          <div style={{ fontStyle: 'italic' }}>Pergear</div>
+          <div>25mm 1.8:16</div>
+          <div>HD.MC Ø43</div>
+          <div></div>
+        </div>
+      </section>
+
       <Masonry
         items={masonryItems}
         ease="easeIn"
