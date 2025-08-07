@@ -46,7 +46,7 @@ const Home: React.FC = () => {
       <div
         style={{
           position: 'absolute',
-          top: '37%',
+          top: 'clamp(44%, 38%, 57vh)',
           left: '25%',
           transform: 'translate(-50%, -50%)',
           fontSize: '1.7rem',
@@ -61,7 +61,7 @@ const Home: React.FC = () => {
       </div>
 
       {/* Foreground content */}
-      <div style={{ marginTop: '17rem', textAlign: 'center' }}>
+      <div style={{ marginTop: '10rem', textAlign: 'center' }}>
         {/* Foreground content */}
         <div
           style={{
@@ -95,7 +95,7 @@ const Home: React.FC = () => {
 
 
       {/* Extra section for scroll */}
-      <div style={{ height: '50vh' }}></div>
+      <div style={{ height: '20vh' }}></div>
 
       {/* Social buttons */}
       <div

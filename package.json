@@ -5,7 +5,7 @@
   "description": "A simple blog built with Next.js and Markdown posts",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 172.19.125.193",
     "build": "next build && next export",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d out",

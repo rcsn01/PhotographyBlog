@@ -95,7 +95,7 @@ export default function DevPage({ posts }: Props) {
         className="cards-container"
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', // ✅ Increased min width
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', // ✅ Increased min width
           marginTop: '5rem',
           gap: '2.5rem', // Slightly larger gap
         }}
