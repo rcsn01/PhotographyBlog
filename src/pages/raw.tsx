@@ -8,6 +8,7 @@ interface Post {
   description?: string;
   image?: string;
   height: number;
+  thumbnail?: string;     // pre-generated thumbnail path
 }
 
 interface Props {
@@ -21,7 +22,6 @@ export default function RawPage({ posts }: Props) {
     img: post.image ?? 'https://picsum.photos/600/800?grayscale&random=' + index,
     url: `/rawpost/${post.slug}`,
     height: post.height * 600,
-    //height: Math.floor(Math.random() * (1500 - 500 + 1)) + 500, // Random between 200-500
     post,
   }));
 

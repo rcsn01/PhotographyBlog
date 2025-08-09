@@ -10,8 +10,6 @@ import { gsap } from "gsap";
 // Ensure you're importing CSS correctly (note: .module.css should be imported with a name)
 import styles from "./Masonry.module.css";
 
-import NextImage from "next/image";
-
 
 const useMedia = (
   queries: string[],
@@ -108,16 +106,16 @@ const Masonry: React.FC<MasonryProps> = ({
   blurToFocus = true,
   colorShiftOnHover = false,
 }) => {
-    const columns = useMedia(
+  const columns = useMedia(
     [
-        "(min-width: 1600px)",  // Extra large screens
-        "(min-width: 1200px)",  // Large desktop
-        "(min-width: 900px)",   // Tablet landscape
-        "(min-width: 600px)"    // Tablet portrait
+      "(min-width: 1600px)", // Extra large screens
+      "(min-width: 1200px)", // Large desktop
+      "(min-width: 900px)", // Tablet landscape
+      "(min-width: 600px)", // Tablet portrait
     ],
-    [5, 4, 3, 2],  // More columns at each breakpoint
-    1              // Single column on mobile
-    );
+    [5, 4, 3, 2], // More columns at each breakpoint
+    1 // Single column on mobile
+  );
 
   const [containerRef, { width }] = useMeasure<HTMLDivElement>();
   //const [imagesReady, setImagesReady] = useState(false);
@@ -162,7 +160,7 @@ const Masonry: React.FC<MasonryProps> = ({
   }, [items]);
   */
 
-    const grid = useMemo<GridItem[]>(() => {
+  const grid = useMemo<GridItem[]>(() => {
     if (!width) return [];
 
     const gapSize = 10; // Match this with your CSS gap
@@ -170,16 +168,16 @@ const Masonry: React.FC<MasonryProps> = ({
     const columnWidth = (width - (columns - 1) * gapSize) / columns;
 
     return items.map((child) => {
-        const col = colHeights.indexOf(Math.min(...colHeights));
-        const x = columnWidth * col + gapSize * col; // Add gap offset
-        const height = child.height / 2;
-        const y = colHeights[col];
+      const col = colHeights.indexOf(Math.min(...colHeights));
+      const x = columnWidth * col + gapSize * col; // Add gap offset
+      const height = child.height / 2;
+      const y = colHeights[col];
 
-        colHeights[col] += height + gapSize; // Add gap to height calculation
+      colHeights[col] += height + gapSize; // Add gap to height calculation
 
-        return { ...child, x, y, w: columnWidth, h: height };
+      return { ...child, x, y, w: columnWidth, h: height };
     });
-    }, [columns, items, width]);
+  }, [columns, items, width]);
 
   const hasMounted = useRef(false);
 
@@ -214,8 +212,8 @@ const Masonry: React.FC<MasonryProps> = ({
           opacity: 1,
           ...animationProps,
           ...(blurToFocus && { filter: "blur(0px)" }),
-          duration: duration,  // Using prop
-          ease: ease,         // Using prop
+          duration: duration, // Using prop
+          ease: ease, // Using prop
           delay: index * stagger,
         });
       } else {
@@ -233,7 +231,7 @@ const Masonry: React.FC<MasonryProps> = ({
 
   const handleMouseEnter = (e: React.MouseEvent, item: GridItem) => {
     const element = e.currentTarget as HTMLElement;
-    
+
     if (scaleOnHover) {
       gsap.to(element, {
         scale: hoverScale,
@@ -255,7 +253,7 @@ const Masonry: React.FC<MasonryProps> = ({
 
   const handleMouseLeave = (e: React.MouseEvent, item: GridItem) => {
     const element = e.currentTarget as HTMLElement;
-    
+
     if (scaleOnHover) {
       gsap.to(element, {
         scale: 1,
@@ -280,8 +278,8 @@ const Masonry: React.FC<MasonryProps> = ({
   }
 
   return (
-    <div 
-      ref={containerRef} 
+    <div
+      ref={containerRef}
       className={styles.list}
       style={{
         position: "relative",
@@ -313,20 +311,20 @@ const Masonry: React.FC<MasonryProps> = ({
               position: "relative",
             }}
           >
-            <NextImage
+            {/* Replaced NextImage with a plain img to remove optimization */}
+            <img
               src={item.img}
               alt=""
-              fill
-              sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              loading="lazy"
               style={{
+                width: "100%",
+                height: "100%",
                 objectFit: "cover",
                 borderRadius: "0px",
                 margin: "0 auto",
+                display: "block",
               }}
-              placeholder="empty"
-              loading="lazy"
-              // 💡 Pass stagger delay via closure
-              onLoadingComplete={() => {
+              onLoad={() => {
                 const element = document.querySelector(`[data-key="${item.id}"]`);
                 if (!element) return;
 
@@ -364,7 +362,8 @@ const Masonry: React.FC<MasonryProps> = ({
                   left: 0,
                   width: "100%",
                   height: "100%",
-                  background: "linear-gradient(45deg, rgba(255,0,150,0.5), rgba(0,150,255,0.5))",
+                  background:
+                    "linear-gradient(45deg, rgba(255,0,150,0.5), rgba(0,150,255,0.5))",
                   opacity: 0,
                   pointerEvents: "none",
                 }}
@@ -373,7 +372,6 @@ const Masonry: React.FC<MasonryProps> = ({
           </div>
         </div>
       ))}
-
     </div>
   );
 };

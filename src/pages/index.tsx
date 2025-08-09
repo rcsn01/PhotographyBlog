@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import TrueFocus from '../components/TrueFocus';
 import RotatingText from '../components/RotatingText';
-import Iridescence from '../components/Iridescence';
 import { FaLinkedin, FaEnvelope, FaGithub } from 'react-icons/fa';
 
 const Home: React.FC = () => {

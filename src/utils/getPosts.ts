@@ -21,6 +21,7 @@ export function getPostsFromFolder(folder: string) {
       features: Array.isArray(data.features) ? data.features : [],
       tools: Array.isArray(data.tools) ? data.tools : [],
       image: data.image || '', // <-- add this line
+      thumbnail: data.thumbnail || '', // <-- add this
       images: Array.isArray(data.images) ? data.images : [], // ✅ support multiple images
       content: content.trim(), // ✅ get actual markdown content for details page
       height: data.height || 300, // Default height if not specified
