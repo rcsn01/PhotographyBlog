@@ -1,14 +1,19 @@
 {
-  "homepage": "https://rcsn01/github.io/PhotographyBlog",
+  "homepage": "https://rcsn01.github.io/PhotographyBlog",
   "name": "my-nextjs-blog",
   "version": "1.0.0",
   "description": "A simple blog built with Next.js and Markdown posts",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rcsn01/PhotographyBlog.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "mkdir -p out && touch out/.nojekyll",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d out",
+    "deploy": "gh-pages -d out -b gh-pages -r git@github.com:rcsn01/PhotographyBlog.git -m 'Deploy $(date +\"%Y-%m-%d %H:%M:%S\")'",
     "start": "next start",
     "generate-posts": "node generatePosts.js"
   },
